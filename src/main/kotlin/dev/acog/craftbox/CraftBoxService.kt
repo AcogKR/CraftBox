@@ -12,12 +12,10 @@ class CraftBoxService(
 
     @PostConstruct
     fun start() {
-        plugin.getLogger().info("fuck You")
     }
 
     @PreDestroy
     fun stop() {
-        plugin.getLogger().info("h")
     }
 
 }

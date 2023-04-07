@@ -1,23 +1,24 @@
 package dev.acog.craftbox.core.entity
 
-import jakarta.persistence.CollectionTable
-import jakarta.persistence.ElementCollection
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import java.util.UUID
+import jakarta.persistence.*
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import java.util.*
 
-@Entity
+@Entity(name = "userbox")
+@EntityListeners(AuditingEntityListener::class)
 data class UserBox(
     @Id
-    @GeneratedValue
-    val uuid: UUID,
-    val id: Int,
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long,
 
-    @ElementCollection
-    @CollectionTable(name = "items", joinColumns = [JoinColumn(name = "item_id")])
-    val items: Map<Int, ByteArray>
+    @Column(length = 25, nullable = false)
+    var uuid: UUID,
+
+    @Column(length = 100, nullable = false)
+    var number: Int,
+
+    @OneToMany(mappedBy = "", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    var items: MutableMap<Int, ByteArray>
 ) {
-    constructor() : this(UUID.randomUUID(), 0, emptyMap())
+    constructor() : this(-1, UUID.randomUUID(), 0, mutableMapOf())
 }
